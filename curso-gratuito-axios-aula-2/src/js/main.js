@@ -3,6 +3,7 @@ const dataEl = document.getElementById('data');
 const headersEl = document.getElementById('headers');
 const configEl = document.getElementById('config');
 
+axios.defaults.baseURL = 'https://api.example.com';
 
 axios.interceptors.request.use(function(config){
     config.headers.common.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
@@ -25,7 +26,7 @@ const get = () => {
         };
     
 
-    axios.get('https://jsonplaceholder.typicode.com/posts', config)
+    axios.get('posts', config)
         .then((response)=>{
 
             renderOutput(response);
