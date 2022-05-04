@@ -3,6 +3,18 @@ const dataEl = document.getElementById('data');
 const headersEl = document.getElementById('headers');
 const configEl = document.getElementById('config');
 
+
+axios.interceptors.request.use(function(config){
+    config.headers.common.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+    console.log('Hello world / Olá Mundo');
+        
+    return config;
+}, function (error) {
+    // Do something with request error
+    console.log(error);
+    return Promise.reject(error);
+  });
+
 const get = () => {
 
     const config = 
@@ -134,13 +146,41 @@ const errorHandling = () => {
     axios.get('https://jsonplaceholder.typicode.com/postsx')
         .then((response)=>{renderOutput(response);})
         .catch(function(error){
-            renderOutput(error);
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+            console.log(error.message);
+            console.log(error.config);
+            renderOutput(error.response);
         });
 
     console.log('errorHandling');
 }
 
 const cancel = () => {
+
+    const controller = new AbortController();
+
+    const config = 
+    {
+        params: {
+                _limits: 5
+                },
+        signal: controller.signal
+    };
+
+
+    axios.get('https://jsonplaceholder.typicode.com/posts', config)
+        .then((response)=>{
+           renderOutput(response);
+            controller.abort();
+        }).catch((error)=>{
+            renderOutput(error.response);
+            console.log(error.message);
+        });
+
+
+
     console.log('cancel');
 }
 
